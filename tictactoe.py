@@ -1,12 +1,12 @@
 class Board:
     board = [" " for x in range(10)]
-    circleRound = True
-    # add list/set for num track
+    turn = True # True -> Circle, False -> Cross
 
     def __init__(self) -> None:
-        self.printBoard()
+        self.print_board()
+        print("Player 1 Turn")
 
-    def printBoard(self):
+    def print_board(self):
         for rows in range(3):
             print("   |   |")
             print(" "+ self.board[1+rows*3] +" | "+ self.board[2+rows*3] +" | "+ self.board[3+rows*3])
@@ -15,33 +15,41 @@ class Board:
                 print(" _________\n")
         print("\n")
 
-    def chooseField(self):
-        choosedNum = input("Choose a field from 1-9:")
-        choosedNum = int(choosedNum)
-        #choosedNum = input("Already choosen! Choose a different field from 1-9:")
-        # if a index value is already given ask for field again
-        if(self.circleRound):
-            self.addCircle(choosedNum)
-            self.circleRound = False
+    def choose_field(self):
+        field = input("Choose a field from 1-9: ")
+        field = int(field)
+        while self.board[field] is not " ":
+            field = input("Already selected! Select another field from 1-9: ")
+            field = int(field)
+
+        # players taking turns
+        if(self.turn):
+            self.add_circle(field)
+            self.turn = False
         else:
-            self.addCross(choosedNum)
-            self.circleRound = True
+            self.add_cross(field)
+            self.turn = True
     
-    def addCircle(self, index):
+    def add_circle(self, index):
         self.board[index] = "O"
-        self.printBoard()
+        self.print_board()
+        print("Player 2 Turn")
 
-    def addCross(self, index):
+    def add_cross(self, index):
         self.board[index] = "X"
-        self.printBoard()
+        self.print_board()
+        print("Player 1 Turn")
 
-    # determinate if game ended
-    def gameEnd(self):
+
+    # determines whether the game is over
+    def game_end(self):
+        # player won
+        # draw -> all fields are occupied
         return False
 
 
 if __name__ == "__main__":
     newBoard = Board()
 
-    while(not newBoard.gameEnd()):
-        newBoard.chooseField()
+    while(not newBoard.game_end()):
+        newBoard.choose_field()
