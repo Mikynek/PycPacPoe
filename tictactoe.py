@@ -4,7 +4,7 @@ class Board:
     # add list/set for num track
 
     def __init__(self) -> None:
-        pass
+        self.printBoard()
 
     def printBoard(self):
         for rows in range(3):
@@ -22,8 +22,10 @@ class Board:
         # if a index value is already given ask for field again
         if(self.circleRound):
             self.addCircle(choosedNum)
+            self.circleRound = False
         else:
             self.addCross(choosedNum)
+            self.circleRound = True
     
     def addCircle(self, index):
         self.board[index] = "O"
@@ -33,10 +35,13 @@ class Board:
         self.board[index] = "X"
         self.printBoard()
 
+    # determinate if game ended
+    def gameEnd(self):
+        return False
 
 
-newBoard = Board()
-newBoard.printBoard()
-newBoard.chooseField()
-newBoard.addCircle(2)
-newBoard.addCross(3)
+if __name__ == "__main__":
+    newBoard = Board()
+
+    while(not newBoard.gameEnd()):
+        newBoard.chooseField()
