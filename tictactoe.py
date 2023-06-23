@@ -1,8 +1,7 @@
 class Board:
-    board = [" " for x in range(10)]
-    turn = True # True -> Circle, False -> Cross
-
     def __init__(self) -> None:
+        self.board = [" " for _ in range(10)]
+        self.turn = True    # True -> Circle, False -> Cross
         self.print_board()
         print("Player 1 Turn")
 
@@ -18,7 +17,7 @@ class Board:
     def choose_field(self):
         field = input("Choose a field from 1-9: ")
         field = int(field)
-        while self.board[field] is not " ":
+        while self.board[field] != " ":
             field = input("Already selected! Select another field from 1-9: ")
             field = int(field)
 
@@ -40,11 +39,25 @@ class Board:
         self.print_board()
         print("Player 1 Turn")
 
-
     # determines whether the game is over
-    def game_end(self):
-        # player won
-        # draw -> all fields are occupied
+    def game_end(self) -> bool:
+        winning_conditions = [
+            [1, 2, 3], [4, 5, 6], [7, 8, 9],  # Rows
+            [1, 4, 7], [2, 5, 8], [3, 6, 9],  # Columns
+            [1, 5, 9], [3, 5, 7]  # Diagonals
+        ]
+        for condition in winning_conditions:
+            if all(self.board[i] == "O" for i in condition):
+                print("Player 1 WON!")
+                return True
+            elif all(self.board[i] == "X" for i in condition):
+                print("Player 2 WON!")
+                return True
+
+        if all(cell != " " for cell in self.board[1:]):
+            print("DRAW")
+            return True
+
         return False
 
 
